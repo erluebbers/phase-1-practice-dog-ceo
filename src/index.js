@@ -17,20 +17,33 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(data => {
             let breeds = Object.keys(data.message)
             dogBreeds.push(...breeds)
-            breeds.forEach(element => {
-                let newLi = document.createElement('li')
-                newLi.innerText = element
-                document.querySelector('#dog-breeds').appendChild(newLi)
-                newLi.addEventListener('click', () => {
-                    newLi.style.color = "Crimson"
-                })
-            })
-            const dropDown = document.querySelector('#breed-dropdown')
-            dropDown.addEventListener('change', (event) => {
-                let sortedArray = dogBreeds.filter((element) => {
-                    return element.charAt(0) === event.target.value
-                })
-                console.log(sortedArray)
+            createList(breeds)
+            sortList(dogBreeds)         
+        })
+    function createList (array) {
+        array.forEach(element => {
+            let newLi = document.createElement('li')
+            newLi.innerText = element
+            document.querySelector('#dog-breeds').appendChild(newLi)
+            newLi.addEventListener('click', () => {
+                newLi.style.color = "Crimson"
             })
         })
+    }
+    function sortList (array) {
+        const dropDown = document.querySelector('#breed-dropdown')
+        dropDown.addEventListener('change', (event) => {
+            removeItems()
+            let sortedArray = array.filter((element) => {
+                return element.charAt(0) === event.target.value
+        })
+        createList(sortedArray)
+        })
+    }
+    function removeItems () {
+        let parentList = document.querySelector('#dog-breeds')
+        while (parentList.firstChild) {
+            parentList.removeChild(parentList.firstChild);
+        }
+    }
 })
